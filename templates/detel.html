@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="col-lg-7 text-center">
+                    <div class="section-title position-relative text-center mx-auto mb-4 pb-3" style="max-width: 600px;">
+                        <h2 class="text-primary font-secondary">{{ x.nomi }}</h2>
+                        <h1 class="display-4 text-uppercase text-white">{{ x.nomi1 }}</h1>
+                    </div>
+                    <p class="text-white mb-4">{{ x.text }}</p>
+                    <a href="" class="btn btn-primary border-inner py-3 px-5 me-3">Shop Now</a>
+                    <a href="" class="btn btn-dark border-inner py-3 px-5">Read More</a>
+                </div>
+<div class="text-center mt-3">
+    <a href="{% url 'home-update' detel.pk %}" class="btn btn-warning">O‘zgartirish</a>
+    <a href="{% url 'home-delete' detel.pk %}" class="btn btn-danger">O‘chirish</a>
+  </div>
+
+  <hr class="my-5">
+{% endblock content %}

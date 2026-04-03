@@ -16,4 +16,41 @@
   </div>
 
   <hr class="my-5">
+
+<!-- Izohlar qismi -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <h4 class="mb-4">💬 Izohlar ({{ comments.count }})</h4>
+
+      {% for comment in comments %}
+        <div class="border rounded p-3 mb-3 bg-light">
+          <strong>{{ comment.user.username }}</strong>
+          <small class="text-muted float-end">{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+          <p class="mt-2 mb-0">{{ comment.text }}</p>
+        </div>
+      {% empty %}
+        <p class="text-muted">Hozircha izohlar yo‘q. Birinchi bo‘lib izoh qoldiring!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Izoh yozish formasi -->
+  {% if user.is_authenticated %}
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <h5 class="mb-3">✍️ Izoh qoldirish</h5>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary px-4">Yuborish</button>
+        </form>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-warning mt-3">
+      Izoh yozish uchun <a href="{% url 'login' %}">tizimga kiring</a>.
+    </div>
+  {% endif %}
+</div>
+
 {% endblock content %}

@@ -7,8 +7,12 @@ from blog.models import Home, Home1, Home2, Home3, Home4, Home5, Home6, Contact
 @admin.register(Home)
 class HomeAdmin(admin.ModelAdmin):
     list_display = ['text']
+    list_filter = ['nomi']
+    search_fields = ['nomi','text']
+    readonly_fields = []
+    ordering = ('nomi','text')
 
-
+    
 @admin.register(Home1)
 class Home1Admin(admin.ModelAdmin):
     list_display = ['text']

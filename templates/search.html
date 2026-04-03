@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Qidiruv
+
+{% block content %}
+<div class="container mt-4">
+
+  {% if query %}
+    <h5>🔍 "{{ query }}" bo‘yicha natijalar:</h5>
+    <hr>
+    {% if results %}
+      {% for news in results %}
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <h5>{{ news.title }}</h5>
+            <p>{{ news.text|truncatewords:25 }}</p>
+            <a href="{% url 'detail' item.slug %}" class="btn btn-outline-primary btn-sm">Batafsil</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>Hech qanday natija topilmadi 😢</p>
+    {% endif %}
+  {% else %}
+    <p>Qidiruv so‘rovini kiriting.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

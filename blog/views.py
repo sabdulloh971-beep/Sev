@@ -1,9 +1,10 @@
-from django.shortcuts import render,get_object_or_404
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.shortcuts import render, get_object_or_404, redirect
+from django.db.models import Q
 
-from blog.forms import ContactForm
-from blog.models import Home, Home1, Home2, Home3, Home4, Home5, Home6, Contact
+from blog.forms import ContactForm, Comments, CommentsForm
+from blog.models import Home, Home1, Home2, Home3, Home4, Home5, Home6, Contact,Comments
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -89,15 +90,31 @@ def testimonial(request):
 
     return render(request,"testimonial.html", context=context)
 
+@login_required
+def index_detel(request, slug):
+    text = get_object_or_404(Home5, slug=slug)
+    comments = text.comments.all().order_by('-created_at')
+    user = request.user
 
-def index_detel(request,slug):
-    text = get_object_or_404(Home5,slug=slug)
+    # Comment qo‘shish
+    if request.method == "POST":
+        form = CommentsForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.home = text   # yoki new_comment.post = text
+            new_comment.user = user
+            new_comment.save()
+            return redirect('detel', slug=slug)
+    else:
+        form = CommentsForm()
+
     context = {
         'detel': text,
+        'form': form,
+        'comments': comments,
     }
 
-
-    return render(request,"detel.html",context = context)
+    return render(request, "detel.html", context=context)
 
 
 class Home5CreateView(CreateView):
@@ -116,4 +133,27 @@ class Home5DeleteView(DeleteView):
     model = Home5
     template_name = 'home_delete.html'
     success_url = "/"
+
+
+
+
+
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        results = Home.objects.filter(
+            Q(nomi__icontains=query) |
+            Q(text__icontains=query)
+        ).distinct()
+
+
+    else :
+        results = []
+
+    return render(request, "index.html", {
+        "results": results,
+        "query": query,
+     })
+
 

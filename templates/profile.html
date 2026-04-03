@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="width: 100%; display: flex; justify-content: center; margin-top: 50px;">
+  <div style="background: white; padding: 30px; border-radius: 15px; width: 400px; text-align: center; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+
+{% if user.profile.image %}
+<img src="{{ user.profile.image.url }}"
+     class="rounded-circle border border-warning border-3 mb-4"
+     width="150" height="150">
+{% else %}
+<img src="https://via.placeholder.com/150"
+     class="rounded-circle border border-secondary border-3 mb-4"
+     width="150" height="150">
+{% endif %}
+
+<h3>{{ user.first_name }} {{ user.last_name }}</h3>
+<p style="color: gray;">@{{ user.username }}</p>
+
+<p>Email: {{ user.email }}</p>
+<p>Phone: {{ user.profile.phone }}</p>
+<p>Address: {{ user.profile.address }}</p>
+<p>Text: {{ user.profile.bio }}</p>
+
+<div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+  <a href="{% url 'profile_edit' %}" style="background-color: orange; color: white; padding: 8px 20px; border-radius: 5px; text-decoration: none;">
+     Edit Profile
+  </a>
+
+  <a href="{% url 'logout' %}" style="background-color: crimson; color: white; padding: 8px 20px; border-radius: 5px; text-decoration: none;">
+     Logout
+  </a>
+
+  <a href="{% url 'password_change' %}" style="background-color: royalblue; color: white; padding: 8px 20px; border-radius: 5px; text-decoration: none;">
+     Parolni o‘zgartirish
+  </a>
+</div>
+
+  </div>
+</div>
+
+{% endblock %}
